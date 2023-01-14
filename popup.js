@@ -2,11 +2,14 @@ const COMMENT_TEXT_STORAGE_KEY = "lgtm-comment-text";
 const COMMENT_BTN_LABEL_STORAGE_KEY = "lgtm-comment-btn-label";
 
 function loadFromStorage() {
-  const commentText = window.localStorage.getItem(COMMENT_TEXT_STORAGE_KEY) || "LGTM";
-  document.getElementById("comment-text").value = commentText;
-  
-  const commentBtnLabel = window.localStorage.getItem(COMMENT_BTN_LABEL_STORAGE_KEY) || "Look Good to Me!";
-  document.getElementById("comment-btn-label").value = commentBtnLabel;
+  chrome.storage.local.get([COMMENT_TEXT_STORAGE_KEY, COMMENT_BTN_LABEL_STORAGE_KEY])
+    .then(result => {
+      const commentText = result[COMMENT_TEXT_STORAGE_KEY] || "LGTM";
+      document.getElementById("comment-text").value = commentText;
+
+      const commentBtnLabel = result[COMMENT_BTN_LABEL_STORAGE_KEY]  || "Look Good to Me!";
+      document.getElementById("comment-btn-label").value = commentBtnLabel;
+    })
 }
 
 function saveToStorage() {
@@ -17,8 +20,10 @@ function saveToStorage() {
     return;
   }
 
-  window.localStorage.setItem(COMMENT_TEXT_STORAGE_KEY, commentText);
-  window.localStorage.setItem(COMMENT_BTN_LABEL_STORAGE_KEY, commentBtnLabel);
+  chrome.storage.local.set({
+    [COMMENT_TEXT_STORAGE_KEY]: commentText,
+    [COMMENT_BTN_LABEL_STORAGE_KEY]: commentBtnLabel
+  });
 }
 
 document.getElementById("reset-btn").addEventListener('click', loadFromStorage);

@@ -4,10 +4,10 @@ let approveBtnSpanLabel = undefined;
 let notYetApproved = undefined;
 let lgtmLabel = undefined;
 
-const approveBtnClickListener = addComment('LGTM');
+const COMMENT_TEXT_STORAGE_KEY = "lgtm-comment-text";
+const COMMENT_BTN_LABEL_STORAGE_KEY = "lgtm-comment-btn-label";
 
 window.addEventListener("load", scanAndSetup);
-
 function scanAndSetup() {
   const intervalMs = 3 * 1000;  
   const doOrDont = () => {
@@ -30,10 +30,18 @@ function attemptRename() {
   notYetApproved = 'Approve' === approveBtnSpanLabel || 'Approve additionally' === approveBtnSpanLabel;
   
   if (notYetApproved) {
-    lgtmLabel = 'Look Good To Me! ' + approveBtnSpanLabel
-    approveBtnSpan.textContent = lgtmLabel;
-    approveBtn.addEventListener('click', approveBtnClickListener);
-    approveBtn.addEventListener('click', toggleLabel);
+    chrome.storage.local.get([COMMENT_TEXT_STORAGE_KEY, COMMENT_BTN_LABEL_STORAGE_KEY])
+      .then(result => {
+        const commentText = result[COMMENT_TEXT_STORAGE_KEY] || "LGTM";
+        const commentBtnLabel = result[COMMENT_BTN_LABEL_STORAGE_KEY]  || "Look Good to Me!";
+
+        lgtmLabel = `${commentBtnLabel} ${approveBtnSpanLabel}`;
+        const approveBtnClickListener = addComment(commentText);
+    
+        approveBtnSpan.textContent = lgtmLabel;
+        approveBtn.addEventListener('click', approveBtnClickListener);
+        approveBtn.addEventListener('click', toggleLabel);
+      });
   }
   return !!approveBtn;
 }
