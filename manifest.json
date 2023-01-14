@@ -13,7 +13,7 @@
     {
       "js": ["scripts/content.js"],
       "matches": [
-        "https://gitlab.com/geraldnguyen/lgtm-approve/-/merge_requests/1/*"
+        "https://*/*/-/merge_requests/*"
       ]
     }
   ]
