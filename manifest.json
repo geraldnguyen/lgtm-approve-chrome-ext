@@ -16,5 +16,9 @@
         "https://*/*/-/merge_requests/*"
       ]
     }
-  ]
+  ], 
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Open to customize the comment text"
+  }
 }
