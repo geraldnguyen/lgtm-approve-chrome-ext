@@ -1,6 +1,8 @@
 let approveBtn = undefined;
 let approveBtnSpan = undefined;
+let approveBtnSpanLabel = undefined;
 let notYetApproved = undefined;
+let lgtmLabel = undefined;
 
 const approveBtnClickListener = addComment('LGTM');
 
@@ -24,10 +26,12 @@ function getApproveBtn() {
 function attemptRename() {
   approveBtn = getApproveBtn();
   approveBtnSpan = approveBtn?.querySelector('span');
-  notYetApproved = 'Approve' === approveBtnSpan?.innerText;
+  approveBtnSpanLabel = approveBtnSpan?.innerText;
+  notYetApproved = 'Approve' === approveBtnSpanLabel || 'Approve additionally' === approveBtnSpanLabel;
   
   if (notYetApproved) {
-    approveBtnSpan.textContent = 'Look Good To Me!';
+    lgtmLabel = 'Look Good To Me! ' + approveBtnSpanLabel
+    approveBtnSpan.textContent = lgtmLabel;
     approveBtn.addEventListener('click', approveBtnClickListener);
     approveBtn.addEventListener('click', toggleLabel);
   }
@@ -35,10 +39,10 @@ function attemptRename() {
 }
 
 function toggleLabel() {
-  if (approveBtnSpan.textContent === 'Look Good To Me!') {
+  if (approveBtnSpan.textContent === lgtmLabel) {
     approveBtnSpan.textContent = 'Revoke approval';
   } else if (approveBtnSpan.textContent === 'Revoke approval') {
-    approveBtnSpan.textContent = 'Approve';
+    approveBtnSpan.textContent = approveBtnSpanLabel;
   }
 }
 
