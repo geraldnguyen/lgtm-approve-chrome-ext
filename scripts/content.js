@@ -28,9 +28,18 @@ function attemptRename() {
   
   if (notYetApproved) {
     approveBtnSpan.textContent = 'Look Good To Me!';
-    approveBtnSpan.addEventListener('click', approveBtnClickListener);
+    approveBtn.addEventListener('click', approveBtnClickListener);
+    approveBtn.addEventListener('click', toggleLabel);
   }
   return !!approveBtn;
+}
+
+function toggleLabel() {
+  if (approveBtnSpan.textContent === 'Look Good To Me!') {
+    approveBtnSpan.textContent = 'Revoke approval';
+  } else if (approveBtnSpan.textContent === 'Revoke approval') {
+    approveBtnSpan.textContent = 'Approve';
+  }
 }
 
 function addComment(text) {
@@ -43,8 +52,6 @@ function addComment(text) {
       const commentBtn = document.querySelector('div[data-qa-selector=comment_button]>button');
       commentBtn.click();
     }, 500);
-
-    approveBtnSpan.textContent = 'Revoke approval';
   });
 }
 
