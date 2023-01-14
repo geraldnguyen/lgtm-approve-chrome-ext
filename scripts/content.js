@@ -34,7 +34,7 @@ function attemptRename() {
 }
 
 function addComment(text) {
-  return () => {
+  return exactlyOnce(() => {
     const commentTA = document.querySelector('#note-body');
     commentTA.value = text;
     commentTA.dispatchEvent(new Event('change'));
@@ -43,5 +43,17 @@ function addComment(text) {
       const commentBtn = document.querySelector('div[data-qa-selector=comment_button]>button');
       commentBtn.click();
     }, 500);
-  };
+
+    approveBtnSpan.textContent = 'Revoke approval';
+  });
+}
+
+function exactlyOnce(func) {
+  let executed = false;
+  return () => {
+    if (executed) return;
+
+    executed = true;
+    func();
+  }
 }
