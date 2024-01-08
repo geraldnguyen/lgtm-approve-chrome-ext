@@ -20,7 +20,15 @@ function scanAndSetup() {
 }
 
 function getApproveBtn() {
-  return document.querySelector('button[data-qa-selector=approve_button]');
+  return document.querySelector('button[data-qa-selector=approve_button]')
+    || document.querySelector('button[data-testid=approve-button]')
+  ;
+}
+
+function getCommentBtn() {
+  return document.querySelector('div[data-qa-selector=comment_button]>button')
+    || document.querySelector('div[data-testid=comment-button]>button')
+  ;
 }
 
 function attemptRename() {
@@ -61,7 +69,7 @@ function addComment(text) {
     commentTA.dispatchEvent(new Event('change'));
     
     setTimeout(() => {
-      const commentBtn = document.querySelector('div[data-qa-selector=comment_button]>button');
+      const commentBtn = getCommentBtn();
       commentBtn.click();
     }, 500);
   });
